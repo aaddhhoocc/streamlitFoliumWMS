@@ -1,13 +1,34 @@
 import streamlit as st
+
 import streamlit_folium as st_folium
 import folium
+from folium.plugins import MousePosition, Fullscreen
+from streamlit_folium import folium_static
 
-from folium.plugins import MousePosition
+
+st.set_page_config(layout = 'wide')
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .css-1rs6os {visibility: hidden;}
+            .css-17ziqus {visibility: hidden;}
+            .block-container {
+                    padding-top: 0rem;
+                    padding-bottom: 0rem;
+                    padding-left: 0rem;
+                    padding-right: 0rem;
+                }
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
 map_geo = folium.Map(location=[52.0,19.0], zoom_start=6) #.add_child(folium.LatLngPopup())
 
 MousePosition().add_to(map_geo)
+Fullscreen().add_to(map_geo)
 
 #folium.Figure(width='100%')
 
@@ -65,6 +86,9 @@ folium.raster_layers.WmsTileLayer(url ='https://mapy.geoportal.gov.pl/wss/servic
                 
 folium.LayerControl().add_to(map_geo)
 
-st_data = st_folium.st_folium(map_geo, width='100%', height=800, use_container_width=True)
+#with st.expander("", expanded=True):
+with st.empty():
+    st_data = st_folium.st_folium(map_geo, width='100%', height=500, use_container_width=True)
+    #st_data = st_folium.folium_static(map_geo, width=1000, height=800)
 
 #st_data
